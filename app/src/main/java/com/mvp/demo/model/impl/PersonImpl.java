@@ -5,6 +5,7 @@ import com.mvp.demo.model.iface.IPerson;
 import com.mvp.demo.net.NetContant;
 import com.mvp.demo.net.OkHttpImpl;
 import com.mvp.demo.net.callback.LoginCallback;
+import com.mvp.demo.net.impl.LoginServiceImpl;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
@@ -23,11 +24,12 @@ import rx.Subscriber;
  */
 public class PersonImpl implements IPerson {
     @Override
-    public Observable<String> login(String account, String pwd) {
+    public Observable<String> login(final String account, final String pwd) {
         return Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
-
+                String result = LoginServiceImpl.login(account, pwd);
+                subscriber.onNext(result);
             }
         });
     }

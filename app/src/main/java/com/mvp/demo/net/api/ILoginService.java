@@ -15,6 +15,6 @@ import retrofit2.http.Path;
 public interface ILoginService {
 
     @POST(NetContant.LOGIN_URL)
-    public void login(@Path("data") String data);
+    String toLogin(@Path("data") String data);
 
 }

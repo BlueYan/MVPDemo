@@ -65,15 +65,9 @@ public class LoginPresenter {
             }
         });*/
 
-        Observable
-                .create(new Observable.OnSubscribe<String>() {
-                    @Override
-                    public void call(Subscriber<? super String> subscriber) {
-                        mIPerson.login(mLoginView.getAccount(), mLoginView.getPwd());
-                    }
-                })
-                .subscribeOn(Schedulers.io()) //call方法会根据最近的一个线程去执行 切换到网络线程
-                .observeOn(AndroidSchedulers.mainThread())  //执行后切换回UI线程
+        mIPerson.login(mLoginView.getAccount(), mLoginView.getPwd())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
@@ -87,10 +81,9 @@ public class LoginPresenter {
 
                     @Override
                     public void onNext(String s) {
-
+                        mLoginView.setResult(s);
                     }
                 });
-
 
 
     }

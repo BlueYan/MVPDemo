@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ILoginView {
         mBtLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mPDialong = ProgressDialog.show(MainActivity.this, null, "登录中...");
                 mLoginPresenter.login();
             }
         });
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements ILoginView {
 
     @Override
     public void setResult(String result) {
+        mPDialong.dismiss();
         mTvResult.setText(result);
     }
 }
