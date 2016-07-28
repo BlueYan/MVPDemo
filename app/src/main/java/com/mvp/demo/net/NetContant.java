@@ -20,6 +20,8 @@ public class NetContant {
     public static final String SERVER_KEY = "yzho4u&-tmg=*y5#e-o3qvctd_62_bakrv&)rr#yhe3*w(3bqs";
 
 
+    public static final String TEST_HOST = "http://120.76.156.9:22354";
+
     public static final String LOGIN_URL = "/customer/login";
 
 }

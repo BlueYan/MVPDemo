@@ -1,6 +1,7 @@
 package com.mvp.demo.presenter;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.mvp.demo.model.bean.PersonEntity;
 import com.mvp.demo.model.iface.IPerson;
@@ -8,6 +9,7 @@ import com.mvp.demo.model.impl.PersonImpl;
 import com.mvp.demo.ui.iview.ILoginView;
 
 import rx.Observable;
+import rx.Observer;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -64,11 +66,11 @@ public class LoginPresenter {
                 mLoginView.setResult(null);
             }
         });*/
-
+        //可以尝试在这里做网络判断是否是处于连接中
         mIPerson.login(mLoginView.getAccount(), mLoginView.getPwd())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Observer<PersonEntity>() {
                     @Override
                     public void onCompleted() {
 
@@ -76,12 +78,21 @@ public class LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.i(TAG, "eeeee");
+                        e.printStackTrace();
+                        //处理异常
                     }
 
                     @Override
-                    public void onNext(String s) {
-                        mLoginView.setResult(s);
+                    public void onNext(PersonEntity personEntity) {
+                        //请求的返回码=200
+                        Log.i(TAG, "person = " + personEntity.toString());
+                        if ( personEntity == null ) {
+                            mLoginView.showToast("用户不存在");
+                        } else {
+                            mLoginView.setResult(personEntity.getInfo().getNick_name());
+                        }
+
                     }
                 });
 

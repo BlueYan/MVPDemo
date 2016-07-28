@@ -4,14 +4,19 @@ import com.mvp.demo.model.bean.PersonEntity;
 import com.mvp.demo.model.iface.IPerson;
 import com.mvp.demo.net.NetContant;
 import com.mvp.demo.net.OkHttpImpl;
+import com.mvp.demo.net.RetrofitManager;
+import com.mvp.demo.net.api.ILoginService;
 import com.mvp.demo.net.callback.LoginCallback;
-import com.mvp.demo.net.impl.LoginServiceImpl;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import okhttp3.Call;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -23,15 +28,28 @@ import rx.Subscriber;
  * 修改时间：
  */
 public class PersonImpl implements IPerson {
+
+
     @Override
-    public Observable<String> login(final String account, final String pwd) {
-        return Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> subscriber) {
-                String result = LoginServiceImpl.login(account, pwd);
-                subscriber.onNext(result);
-            }
-        });
+    public Observable<PersonEntity> login(final String account, final String pwd) {
+
+        /*Retrofit mRetrofit = new Retrofit.Builder()
+                .baseUrl("http://120.76.156.9:22354")  //首先baseUrl有格式要求，只能是http后的ip地址或者是域名
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();*/
+        ILoginService mILogin = RetrofitManager.mRetrofit.create(ILoginService.class);
+        try {
+            return mILogin.toLogin(new JSONObject()
+                    .put("__userid", "__userid")
+                    .put("sign", OkHttpImpl.makeSign("__userid",  NetContant.LOGIN_URL))
+                    .put("ltype", "")
+                    .put("account", account)
+                    .put("password", pwd).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -41,7 +59,7 @@ public class PersonImpl implements IPerson {
      * @param pwd
      * @param mListener
      */
-   /* @Override
+    @Override
     public void login(String account, String pwd, final ILoginListener mListener) {
         try {
             OkHttpUtils
@@ -69,5 +87,5 @@ public class PersonImpl implements IPerson {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }

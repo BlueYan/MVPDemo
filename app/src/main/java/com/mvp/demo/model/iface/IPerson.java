@@ -13,17 +13,17 @@ import rx.Observable;
  */
 public interface IPerson {
 
-//    void login(String account, String pwd, ILoginListener mListener);
+   void login(String account, String pwd, ILoginListener mListener);
 
 //    void login(String account, String pwd);
 
-    Observable<String> login(String account, String pwd);
+    Observable<PersonEntity> login(String account, String pwd);
 
     //不需要回调
-    /*public interface ILoginListener {  //定义出一个接口出来，用于数据回调
+    public interface ILoginListener {  //定义出一个接口出来，用于数据回调
         void loginSuccess(PersonEntity mPItem);
 
         void loginFailed();
-    }*/
+    }
 
 }

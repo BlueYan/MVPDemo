@@ -1,7 +1,9 @@
 package com.mvp.demo.base;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.mvp.demo.net.RetrofitManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
@@ -28,5 +30,8 @@ public class BaseApp extends Application {
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
                 .build();
         OkHttpUtils.initClient(mClient);
+
+        //初始化
+        RetrofitManager.getRetrofitInstance(getApplicationContext(), "http://120.76.156.9:22354");
     }
 }
