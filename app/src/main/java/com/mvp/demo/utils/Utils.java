@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +19,23 @@ import java.io.IOException;
  */
 public class Utils {
 
-    public static File getCacheDir(Context context) {
-        File mCacheFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/mvpdemo", "mvpdemo");
+    private static final String TAG = Utils.class.getSimpleName();
+
+    private static final String SDDIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/mvpdemo";
+
+    public static File getCacheDir() {
+        File mCacheFileDir = new File(SDDIR);
+        Log.i(TAG, "dir = " + mCacheFileDir.getAbsolutePath());
+        if ( !mCacheFileDir.exists() ) {
+            mCacheFileDir.mkdirs();
+        }
+        return mCacheFileDir;
+    }
+
+    public static File getCacheFile() {
+        getCacheDir();
+        File mCacheFile = new File(SDDIR, "httpCache");
+        Log.i(TAG, "cache = " + mCacheFile.getAbsolutePath());
         if ( !mCacheFile.exists() ) {
             try {
                 mCacheFile.createNewFile();

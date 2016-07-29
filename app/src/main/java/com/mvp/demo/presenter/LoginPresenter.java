@@ -80,6 +80,7 @@ public class LoginPresenter {
                     public void onError(Throwable e) {
                         Log.i(TAG, "eeeee");
                         e.printStackTrace();
+                        mLoginView.hideDialog();
                         //处理异常
                     }
 
